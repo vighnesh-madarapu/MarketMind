@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}MarketMind | Marketing Intelligence{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="eyebrow">AI-POWERED MARKETING INTELLIGENCE</span>
+
+        <h1>
+            Turn marketing data into
+            <span>meaningful growth.</span>
+        </h1>
+
+        <p class="hero-description">
+            Understand your campaigns, discover valuable insights and make
+            smarter business decisions with one intelligent platform.
+        </p>
+
+        <div class="hero-actions">
+
+            {% if session.get('user_id') %}
+
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                    Go to Dashboard →
+                </a>
+
+            {% else %}
+
+                <a href="{{ url_for('signup') }}" class="btn btn-primary">
+                    Get Started →
+                </a>
+
+                <a href="{{ url_for('login') }}" class="btn btn-secondary">
+                    Sign In
+                </a>
+
+            {% endif %}
+
+        </div>
+
+        <div class="hero-note">
+            <span class="status-dot"></span>
+            One platform for smarter marketing decisions
+        </div>
+
+    </div>
+
+    <div class="hero-visual">
+
+        <div class="preview-card">
+
+            <div class="preview-top">
+                <div>
+                    <span class="small-label">MARKETING OVERVIEW</span>
+                    <h3>Growth Analytics</h3>
+                </div>
+
+                <span class="preview-tag">Preview</span>
+            </div>
+
+            <div class="preview-metric">
+                <span>Total Campaign Reach</span>
+                <strong>128.6K</strong>
+                <small>Illustrative sample data</small>
+            </div>
+
+            <div class="mini-chart">
+                <div style="height:35%"></div>
+                <div style="height:50%"></div>
+                <div style="height:42%"></div>
+                <div style="height:68%"></div>
+                <div style="height:55%"></div>
+                <div style="height:82%"></div>
+                <div style="height:72%"></div>
+                <div style="height:95%"></div>
+            </div>
+
+            <div class="preview-bottom">
+                <div>
+                    <span class="metric-dot lavender"></span>
+                    Reach
+                </div>
+
+                <div>
+                    <span class="metric-dot sage"></span>
+                    Engagement
+                </div>
+            </div>
+
+        </div>
+
+        <div class="floating-note">
+            <span class="note-icon">✦</span>
+
+            <div>
+                <strong>AI Insights</strong>
+                <small>Discover growth opportunities</small>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section features-section">
+
+    <div class="section-heading">
+
+        <span class="eyebrow">WHAT YOU CAN DO</span>
+
+        <h2>Everything you need to market smarter.</h2>
+
+        <p>
+            Bring your marketing activities, analytics and insights together.
+        </p>
+
+    </div>
+
+    <div class="feature-grid">
+
+        <article class="feature-card">
+            <div class="feature-icon">↗</div>
+
+            <h3>Campaign Analytics</h3>
+
+            <p>
+                Track impressions, clicks, conversions and campaign performance.
+            </p>
+        </article>
+
+
+        <article class="feature-card">
+            <div class="feature-icon">✦</div>
+
+            <h3>AI-Powered Insights</h3>
+
+            <p>
+                Turn campaign metrics into useful recommendations and insights.
+            </p>
+        </article>
+
+
+        <article class="feature-card">
+            <div class="feature-icon">◎</div>
+
+            <h3>Audience Intelligence</h3>
+
+            <p>
+                Explore customer groups and understand audience behaviour.
+            </p>
+        </article>
+
+
+        <article class="feature-card">
+            <div class="feature-icon">⌁</div>
+
+            <h3>Business Growth</h3>
+
+            <p>
+                Evaluate marketing budgets, revenue and return on investment.
+            </p>
+        </article>
+
+    </div>
+
+</section>
+
+
+<section class="cta-section">
+
+    <span class="eyebrow">MAKE BETTER DECISIONS</span>
+
+    <h2>Your next growth opportunity starts with an insight.</h2>
+
+    <p>
+        Bring your marketing data together and discover what it can tell you.
+    </p>
+
+    {% if session.get('user_id') %}
+
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+            Explore Dashboard →
+        </a>
+
+    {% else %}
+
+        <a href="{{ url_for('signup') }}" class="btn btn-primary">
+            Create Your Account →
+        </a>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

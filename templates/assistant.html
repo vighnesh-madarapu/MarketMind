@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}AI Marketing Assistant | MarketMind{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="dashboard-heading">
+        <div>
+            <span class="eyebrow">MARKETING KNOWLEDGE CENTER</span>
+            <h1>Marketing Assistant</h1>
+            <p>Get quick guidance on digital marketing concepts and campaign performance.</p>
+        </div>
+
+        <span class="badge">Smart Assistant</span>
+    </div>
+
+
+    <section class="panel assistant-panel" style="max-width: 900px; margin: 25px auto;">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Ask MarketMind</h2>
+                <p>Enter a marketing-related question below.</p>
+            </div>
+
+            <span class="panel-symbol">✦</span>
+        </div>
+
+
+        <form method="POST" action="{{ url_for('assistant') }}">
+
+            <div class="form-field">
+
+                <label for="question">Your Question</label>
+
+                <textarea
+                    id="question"
+                    name="question"
+                    rows="5"
+                    maxlength="2000"
+                    placeholder="Example: What is CTR and how can I improve it?"
+                    required>{{ question or '' }}</textarea>
+
+                <small>Ask questions about digital marketing, analytics or campaign planning.</small>
+
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">
+                Get Answer →
+            </button>
+
+        </form>
+
+
+        {% if answer %}
+
+        <div class="sentiment-result assistant-answer">
+
+            <span class="eyebrow">MARKETMIND RESPONSE</span>
+
+            <h3>Here's Your Answer</h3>
+
+            <p style="line-height: 1.8; white-space: pre-line;">{{ answer }}</p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <section class="content-section">
+
+        <div class="section-heading">
+            <div>
+                <h2>What Can You Ask?</h2>
+                <p>Explore these marketing topics to get started.</p>
+            </div>
+        </div>
+
+
+        <div class="feature-grid">
+
+            <article class="feature-card">
+                <span class="eyebrow">ANALYTICS</span>
+                <h3>Campaign Performance</h3>
+                <p>
+                    Ask about CTR, conversions, impressions,
+                    conversion rate and ROI.
+                </p>
+                <small>Example: What is CTR?</small>
+            </article>
+
+
+            <article class="feature-card">
+                <span class="eyebrow">SOCIAL MEDIA</span>
+                <h3>Social Media Marketing</h3>
+                <p>
+                    Explore content ideas, audience engagement
+                    and social media marketing basics.
+                </p>
+                <small>Example: How can I improve engagement?</small>
+            </article>
+
+
+            <article class="feature-card">
+                <span class="eyebrow">PLANNING</span>
+                <h3>Budget Planning</h3>
+                <p>
+                    Understand campaign budgets, revenue
+                    and marketing allocation.
+                </p>
+                <small>Example: What is marketing ROI?</small>
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <p class="insight-disclaimer">
+        MarketMind Assistant provides predefined, rule-based marketing
+        guidance. It is not a live generative AI chatbot, and answers
+        may not cover every question.
+    </p>
+
+</section>
+
+{% endblock %}

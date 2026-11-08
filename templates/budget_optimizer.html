@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Budget Optimizer | MarketMind{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="dashboard-heading">
+        <div>
+            <span class="eyebrow">SMART BUDGET PLANNING</span>
+            <h1>Budget Optimizer</h1>
+            <p>Analyze campaign revenue and review suggested budget allocation.</p>
+        </div>
+
+        <span class="status-badge">Budget Recommendation</span>
+    </div>
+
+
+    <section class="stats-grid">
+
+        <article class="stat-card">
+            <span class="stat-label">Total Campaigns</span>
+            <strong>{{ allocations|length }}</strong>
+            <small>Campaigns analyzed</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Current Budget</span>
+            <strong>
+                ₹{{ "{:,.2f}".format(allocations|sum(attribute="current_budget")) }}
+            </strong>
+            <small>Combined existing budget</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Total Revenue</span>
+            <strong>
+                ₹{{ "{:,.2f}".format(allocations|sum(attribute="revenue")) }}
+            </strong>
+            <small>Combined campaign revenue</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Recommended Budget</span>
+            <strong>
+                ₹{{ "{:,.2f}".format(allocations|sum(attribute="recommended_budget")) }}
+            </strong>
+            <small>Suggested allocation total</small>
+        </article>
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Campaign Budget Allocation</h2>
+                <p>Compare your current budget with the suggested allocation.</p>
+            </div>
+        </div>
+
+
+        {% if allocations %}
+
+        <div class="table-responsive">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>Campaign</th>
+                        <th>Current Budget</th>
+                        <th>Revenue</th>
+                        <th>Revenue Share</th>
+                        <th>Recommended Budget</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in allocations %}
+
+                    <tr>
+
+                        <td>
+                            <strong>{{ item["campaign_name"] }}</strong>
+                            <br>
+                            <small>{{ item["platform"] or "N/A" }}</small>
+                        </td>
+
+                        <td>
+                            ₹{{ "{:,.2f}".format(item["current_budget"] or 0) }}
+                        </td>
+
+                        <td>
+                            ₹{{ "{:,.2f}".format(item["revenue"] or 0) }}
+                        </td>
+
+                        <td>
+                            {{ "%.2f"|format(item["share"] or 0) }}%
+                        </td>
+
+                        <td>
+                            <strong>
+                                ₹{{ "{:,.2f}".format(item["recommended_budget"] or 0) }}
+                            </strong>
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="empty-state">
+            <h3>No Campaign Data Available</h3>
+
+            <p>
+                Create campaigns and enter their budget and revenue
+                details to view recommendations.
+            </p>
+
+            <a href="{{ url_for('campaigns') }}" class="btn btn-primary">
+                Create Campaign →
+            </a>
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Optimization Insights</h2>
+                <p>Understand how the suggested allocation is calculated.</p>
+            </div>
+        </div>
+
+
+        <div class="insight-card">
+
+            <span class="eyebrow">ALLOCATION METHOD</span>
+
+            <h3>Revenue-Based Allocation</h3>
+
+            <p>
+                The optimizer distributes the existing campaign budget
+                according to each campaign's share of recorded revenue.
+                When all campaign revenues are zero, it uses an equal
+                allocation as a fallback.
+            </p>
+
+        </div>
+
+
+        <p class="muted-text">
+            These are rule-based planning suggestions, not guaranteed
+            financial or marketing outcomes. Review the recommendations
+            before making budget decisions.
+        </p>
+
+    </section>
+
+</section>
+
+{% endblock %}

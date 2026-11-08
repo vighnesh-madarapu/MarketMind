@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | MarketMind{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="dashboard-heading">
+        <div>
+            <span class="eyebrow">PLATFORM MANAGEMENT</span>
+            <h1>Admin Dashboard</h1>
+            <p>Overview of registered users and platform activity.</p>
+        </div>
+
+        <span class="status-badge">Administrator</span>
+    </div>
+
+
+    <section class="stats-grid">
+
+        <article class="stat-card">
+            <span class="stat-label">Registered Users</span>
+            <strong>{{ user_count or 0 }}</strong>
+            <small>Total accounts on MarketMind</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Total Campaigns</span>
+            <strong>{{ campaign_count or 0 }}</strong>
+            <small>Campaigns across the platform</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Recorded Revenue</span>
+            <strong>₹{{ "{:,.2f}".format(total_revenue or 0) }}</strong>
+            <small>Combined recorded campaign revenue</small>
+        </article>
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Registered Users</h2>
+                <p>Account information and assigned roles.</p>
+            </div>
+
+            <span class="status-badge">
+                {{ users|length }} Accounts
+            </span>
+        </div>
+
+
+        {% if users %}
+
+        <div class="table-responsive">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    {% for user in users %}
+
+                    <tr>
+
+                        <td>#{{ user["id"] }}</td>
+
+                        <td>
+                            <strong>{{ user["name"] }}</strong>
+                        </td>
+
+                        <td>{{ user["email"] }}</td>
+
+                        <td>
+
+                            {% if user["role"] == "admin" %}
+                                <span class="status-badge status-published">
+                                    Administrator
+                                </span>
+                            {% else %}
+                                <span class="status-badge">
+                                    User
+                                </span>
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            {{ user["created_at"] or "N/A" }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="empty-state">
+            <h3>No Registered Users Found</h3>
+            <p>User accounts will appear here after registration.</p>
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Administration Information</h2>
+                <p>Platform access and management details.</p>
+            </div>
+        </div>
+
+        <p>
+            This dashboard provides an overview of user accounts,
+            campaign activity and recorded revenue across MarketMind.
+        </p>
+
+        <p class="muted-text">
+            Administrative access is restricted to authorized accounts.
+            User roles cannot be changed through the public registration
+            or profile forms.
+        </p>
+
+    </section>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}AI Recommendations | MarketMind{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="dashboard-heading">
+        <div>
+            <span class="eyebrow">SMART BUSINESS GUIDANCE</span>
+            <h1>AI Recommendations</h1>
+            <p>Actionable suggestions based on your campaign performance.</p>
+        </div>
+    </div>
+
+
+    <section class="content-section">
+
+        <div class="section-heading">
+            <div>
+                <h2>Marketing Recommendations</h2>
+                <p>
+                    Review these suggestions to identify opportunities
+                    for improving campaign performance.
+                </p>
+            </div>
+
+            <span class="eyebrow">
+                {{ recommendations|length }} Suggestions
+            </span>
+        </div>
+
+
+        <div class="feature-grid">
+
+            {% for item in recommendations %}
+
+            <article class="feature-card recommendation-card">
+
+                <div class="recommendation-header">
+
+                    <span class="eyebrow">
+                        {% if item.priority == "High" %}
+                            🔴 HIGH PRIORITY
+                        {% elif item.priority == "Medium" %}
+                            🟡 MEDIUM PRIORITY
+                        {% else %}
+                            🟢 LOW PRIORITY
+                        {% endif %}
+                    </span>
+
+                </div>
+
+                <h3>{{ item.title }}</h3>
+
+                <p>{{ item.description }}</p>
+
+            </article>
+
+            {% else %}
+
+            <article class="feature-card">
+                <span class="eyebrow">NO SUGGESTIONS</span>
+                <h3>No Recommendations Available</h3>
+                <p>
+                    Add campaign data to receive marketing
+                    performance suggestions.
+                </p>
+
+                <a href="{{ url_for('campaigns') }}" class="btn btn-primary">
+                    Add Campaign →
+                </a>
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <p class="insight-disclaimer">
+        Recommendations are generated using predefined campaign
+        performance rules. They are suggestions for analysis and
+        do not guarantee business results.
+    </p>
+
+</section>
+
+{% endblock %}

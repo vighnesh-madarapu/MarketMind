@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | MarketMind{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="dashboard-heading">
+        <div>
+            <span class="eyebrow">YOUR WORKSPACE</span>
+            <h1>Welcome, {{ session.get('user_name', 'User') }}.</h1>
+            <p>Here's an overview of your marketing performance.</p>
+        </div>
+
+        <span class="dashboard-date">MARKETING OVERVIEW</span>
+    </div>
+
+
+    <div class="stats-grid">
+
+        <article class="stat-card">
+            <span class="stat-label">Total Campaigns</span>
+            <strong>{{ stats.total_campaigns or 0 }}</strong>
+            <small>Campaigns created</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Total Impressions</span>
+            <strong>{{ "{:,}".format(stats.impressions or 0) }}</strong>
+            <small>Campaign reach</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Total Clicks</span>
+            <strong>{{ "{:,}".format(stats.clicks or 0) }}</strong>
+            <small>Audience interactions</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Total Conversions</span>
+            <strong>{{ "{:,}".format(stats.conversions or 0) }}</strong>
+            <small>Recorded conversions</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Total Revenue</span>
+            <strong>₹{{ "{:,.2f}".format(stats.revenue or 0) }}</strong>
+            <small>Recorded campaign revenue</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Marketing Budget</span>
+            <strong>₹{{ "{:,.2f}".format(stats.budget or 0) }}</strong>
+            <small>Total campaign budget</small>
+        </article>
+
+    </div>
+
+
+    <div class="dashboard-content-grid">
+
+        <section class="panel">
+
+            <div class="panel-heading">
+                <div>
+                    <h2>Recent Campaigns</h2>
+                    <p>Your latest marketing activities</p>
+                </div>
+
+                <span class="panel-symbol">↗</span>
+            </div>
+
+            {% if recent %}
+
+                <div class="campaign-list">
+
+                    {% for campaign in recent %}
+
+                    <div class="campaign-row">
+
+                        <div>
+                            <strong>{{ campaign["campaign_name"] }}</strong>
+
+                            <small>
+                                {{ campaign["platform"] }}
+                                ·
+                                {{ campaign["created_at"] or "Date unavailable" }}
+                            </small>
+                        </div>
+
+                        <span class="campaign-status">
+                            {{ campaign["status"] }}
+                        </span>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+                    <div class="empty-icon">◎</div>
+                    <h3>No campaigns yet</h3>
+                    <p>
+                        Your campaign activity will appear here once
+                        campaigns are added.
+                    </p>
+
+                    <a href="{{ url_for('campaigns') }}" class="btn btn-primary">
+                        Create Campaign →
+                    </a>
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <section class="panel quick-actions-panel">
+
+            <div class="panel-heading">
+                <div>
+                    <h2>Quick Actions</h2>
+                    <p>Access your marketing tools</p>
+                </div>
+            </div>
+
+            <div class="quick-links">
+
+                <a href="{{ url_for('campaigns') }}" class="quick-link">
+                    <span>＋</span>
+
+                    <div>
+                        <strong>Manage Campaigns</strong>
+                        <small>Add and track campaigns</small>
+                    </div>
+
+                    <b>→</b>
+                </a>
+
+
+                <a href="{{ url_for('analytics') }}" class="quick-link">
+                    <span>↗</span>
+
+                    <div>
+                        <strong>View Analytics</strong>
+                        <small>Explore performance charts</small>
+                    </div>
+
+                    <b>→</b>
+                </a>
+
+
+                <a href="{{ url_for('ai_insights') }}" class="quick-link">
+                    <span>✦</span>
+
+                    <div>
+                        <strong>Marketing Insights</strong>
+                        <small>Read data-based suggestions</small>
+                    </div>
+
+                    <b>→</b>
+                </a>
+
+
+                <a href="{{ url_for('audience') }}" class="quick-link">
+                    <span>◎</span>
+
+                    <div>
+                        <strong>Audience Intelligence</strong>
+                        <small>Explore customer segments</small>
+                    </div>
+
+                    <b>→</b>
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <section class="panel insight-panel">
+
+            <span class="eyebrow">MARKETMIND</span>
+
+            <h2>Your marketing journey starts here.</h2>
+
+            <p>
+                Add campaign data to explore performance metrics,
+                discover trends and generate meaningful insights.
+            </p>
+
+            <div class="insight-decoration">✦</div>
+
+            <span class="sample-note">
+                Analytics will update as you add data.
+            </span>
+
+        </section>
+
+    </div>
+
+</section>
+
+{% endblock %}

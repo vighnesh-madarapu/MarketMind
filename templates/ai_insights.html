@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}AI Insights | MarketMind{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="dashboard-heading">
+        <div>
+            <span class="eyebrow">INTELLIGENT RECOMMENDATIONS</span>
+            <h1>Marketing Insights</h1>
+            <p>Recommendations generated from your recorded campaign metrics.</p>
+        </div>
+    </div>
+
+
+    <div class="insight-intro">
+
+        <div class="insight-intro-icon">✦</div>
+
+        <div>
+            <h2>Understand your marketing performance.</h2>
+
+            <p>
+                MarketMind evaluates your campaign data using performance
+                rules and provides practical suggestions for improvement.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="insight-list">
+
+        {% if insights %}
+
+            {% for insight in insights %}
+
+            <article class="insight-card {{ insight.type|default('info') }}">
+
+                <div class="insight-card-icon">
+
+                    {% if insight.type == "success" %}
+                        ✓
+                    {% elif insight.type == "warning" %}
+                        !
+                    {% else %}
+                        i
+                    {% endif %}
+
+                </div>
+
+                <div>
+                    <h3>{{ insight.title }}</h3>
+                    <p>{{ insight.description }}</p>
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-state">
+                <div class="empty-icon">✦</div>
+
+                <h3>No insights available yet</h3>
+
+                <p>
+                    Add campaign performance data to receive
+                    marketing recommendations.
+                </p>
+
+                <a href="{{ url_for('campaigns') }}" class="btn btn-primary">
+                    Add Campaign →
+                </a>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="insight-disclaimer">
+        These are rule-based, data-driven suggestions, not guaranteed
+        business outcomes. Their usefulness depends on the accuracy
+        and completeness of your campaign data.
+    </div>
+
+</section>
+
+{% endblock %}

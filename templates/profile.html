@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile | MarketMind{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="dashboard-heading">
+        <div>
+            <span class="eyebrow">ACCOUNT SETTINGS</span>
+            <h1>My Profile</h1>
+            <p>View and update your MarketMind account information.</p>
+        </div>
+
+        <span class="status-badge">Personal Account</span>
+    </div>
+
+
+    <section class="panel profile-panel" style="max-width: 750px;">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Profile Information</h2>
+                <p>Update your personal account details.</p>
+            </div>
+
+            <span class="panel-symbol">✦</span>
+        </div>
+
+
+        <div class="profile-overview" style="margin-bottom: 28px;">
+
+            <div class="user-avatar" style="width: 64px; height: 64px; font-size: 24px;">
+                {{ user['name'][0]|upper if user['name'] else 'U' }}
+            </div>
+
+            <div>
+                <h3>{{ user['name'] }}</h3>
+                <p>{{ user['email'] }}</p>
+            </div>
+
+        </div>
+
+
+        <form method="POST" action="{{ url_for('profile') }}">
+
+            <div class="form-field" style="margin-bottom: 20px;">
+                <label for="name">Full Name</label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value="{{ user['name'] }}"
+                    maxlength="100"
+                    autocomplete="name"
+                    required>
+            </div>
+
+
+            <div class="form-field" style="margin-bottom: 20px;">
+                <label for="email">Email Address</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="{{ user['email'] }}"
+                    maxlength="150"
+                    autocomplete="email"
+                    required>
+            </div>
+
+
+            <div class="form-field" style="margin-bottom: 26px;">
+                <label for="role">Account Role</label>
+
+                <input
+                    type="text"
+                    id="role"
+                    value="{{ user['role']|capitalize }}"
+                    disabled>
+
+                <small>
+                    Account permissions are managed separately
+                    and cannot be changed from this profile.
+                </small>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">
+                Save Changes →
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <section class="panel" style="max-width: 750px;">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Account Information</h2>
+                <p>Your MarketMind account details.</p>
+            </div>
+        </div>
+
+        <div class="campaign-row">
+            <span>Account Name</span>
+            <strong>{{ user['name'] }}</strong>
+        </div>
+
+        <div class="campaign-row">
+            <span>Email Address</span>
+            <strong>{{ user['email'] }}</strong>
+        </div>
+
+        <div class="campaign-row">
+            <span>Account Type</span>
+            <strong>{{ user['role']|capitalize }}</strong>
+        </div>
+
+    </section>
+
+</section>
+
+{% endblock %}

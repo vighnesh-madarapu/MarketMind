@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}Competitor Analysis | MarketMind{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="dashboard-heading">
+        <div>
+            <span class="eyebrow">MARKET INTELLIGENCE</span>
+            <h1>Competitor Analysis</h1>
+            <p>Track competitor presence and compare marketing performance.</p>
+        </div>
+        <span class="badge">Market Research</span>
+    </div>
+
+
+    <section class="stats-grid">
+
+        <article class="stat-card">
+            <span class="stat-label">Total Competitors</span>
+            <strong>{{ competitors|length }}</strong>
+            <small>Saved competitor records</small>
+        </article>
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Add Competitor</h2>
+                <p>Enter competitor details to track their performance.</p>
+            </div>
+        </div>
+
+
+        <form method="POST" action="{{ url_for('competitors') }}">
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label for="competitor_name">Competitor Name</label>
+                    <input
+                        type="text"
+                        id="competitor_name"
+                        name="competitor_name"
+                        maxlength="100"
+                        placeholder="Enter competitor name"
+                        required>
+                </div>
+
+
+                <div class="form-field">
+                    <label for="platform">Platform</label>
+
+                    <select id="platform" name="platform" required>
+                        <option value="">Select Platform</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="YouTube">YouTube</option>
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="X">X</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+
+                <div class="form-field">
+                    <label for="followers">Followers</label>
+                    <input
+                        type="number"
+                        id="followers"
+                        name="followers"
+                        min="0"
+                        step="1"
+                        placeholder="e.g. 25000"
+                        required>
+                </div>
+
+
+                <div class="form-field">
+                    <label for="engagement_rate">Engagement Rate (%)</label>
+                    <input
+                        type="number"
+                        id="engagement_rate"
+                        name="engagement_rate"
+                        min="0"
+                        max="100"
+                        step="0.01"
+                        placeholder="e.g. 4.5"
+                        required>
+                </div>
+
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">
+                Add Competitor →
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Competitor Overview</h2>
+                <p>Review your saved competitor information.</p>
+            </div>
+        </div>
+
+
+        {% if competitors %}
+
+        <div class="table-responsive">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>Competitor</th>
+                        <th>Platform</th>
+                        <th>Followers</th>
+                        <th>Engagement Rate</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    {% for competitor in competitors %}
+
+                    <tr>
+
+                        <td>
+                            <strong>{{ competitor['competitor_name'] }}</strong>
+                        </td>
+
+                        <td>
+                            {{ competitor['platform'] or 'N/A' }}
+                        </td>
+
+                        <td>
+                            {{ "{:,}".format(competitor['followers'] or 0) }}
+                        </td>
+
+                        <td>
+                            {{ "%.2f"|format(competitor['engagement_rate'] or 0) }}%
+                        </td>
+
+                        <td>
+
+                            <form
+                                method="POST"
+                                action="{{ url_for('delete_competitor', competitor_id=competitor['id']) }}"
+                                onsubmit="return confirm('Are you sure you want to delete this competitor?');">
+
+                                <button type="submit" class="btn btn-danger">
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="empty-state">
+            <h3>No Competitors Added</h3>
+            <p>
+                Add your first competitor to start organizing
+                your market research data.
+            </p>
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <p class="insight-disclaimer">
+        Competitor information is manually entered and stored in your account.
+        This feature does not automatically collect live social media data.
+    </p>
+
+</section>
+
+{% endblock %}

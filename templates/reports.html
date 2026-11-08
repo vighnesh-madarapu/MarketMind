@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Marketing Reports | MarketMind{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="dashboard-heading">
+        <div>
+            <span class="eyebrow">BUSINESS PERFORMANCE</span>
+            <h1>Marketing Reports</h1>
+            <p>Review your campaign summary and download a PDF report.</p>
+        </div>
+
+        <a href="{{ url_for('download_report') }}" class="btn btn-primary">
+            Download PDF Report ↓
+        </a>
+    </div>
+
+
+    <section class="stats-grid">
+
+        <article class="stat-card">
+            <span class="stat-label">Total Campaigns</span>
+            <strong>{{ totals['total_campaigns'] or 0 }}</strong>
+            <small>Saved campaigns</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Total Impressions</span>
+            <strong>{{ "{:,}".format(totals['impressions'] or 0) }}</strong>
+            <small>Campaign reach count</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Total Clicks</span>
+            <strong>{{ "{:,}".format(totals['clicks'] or 0) }}</strong>
+            <small>Total audience clicks</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Conversions</span>
+            <strong>{{ "{:,}".format(totals['conversions'] or 0) }}</strong>
+            <small>Recorded conversions</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Total Revenue</span>
+            <strong>₹{{ "{:,.2f}".format(totals['revenue'] or 0) }}</strong>
+            <small>Campaign revenue</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Total Budget</span>
+            <strong>₹{{ "{:,.2f}".format(totals['budget'] or 0) }}</strong>
+            <small>Campaign investment</small>
+        </article>
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Campaign Report Details</h2>
+                <p>Overview of all your saved marketing campaigns.</p>
+            </div>
+
+            <span class="status-badge">
+                {{ campaigns|length }} Campaigns
+            </span>
+        </div>
+
+
+        {% if campaigns %}
+
+        <div class="table-responsive">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>Campaign</th>
+                        <th>Platform</th>
+                        <th>Budget</th>
+                        <th>Impressions</th>
+                        <th>Clicks</th>
+                        <th>Conversions</th>
+                        <th>Revenue</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    {% for campaign in campaigns %}
+
+                    <tr>
+
+                        <td>
+                            <strong>{{ campaign['campaign_name'] }}</strong>
+                        </td>
+
+                        <td>{{ campaign['platform'] or 'N/A' }}</td>
+
+                        <td>
+                            ₹{{ "{:,.2f}".format(campaign['budget'] or 0) }}
+                        </td>
+
+                        <td>
+                            {{ "{:,}".format(campaign['impressions'] or 0) }}
+                        </td>
+
+                        <td>
+                            {{ "{:,}".format(campaign['clicks'] or 0) }}
+                        </td>
+
+                        <td>
+                            {{ "{:,}".format(campaign['conversions'] or 0) }}
+                        </td>
+
+                        <td>
+                            ₹{{ "{:,.2f}".format(campaign['revenue'] or 0) }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <h3>No Campaigns Available</h3>
+
+            <p>
+                Create a campaign to generate your marketing report.
+            </p>
+
+            <a href="{{ url_for('campaigns') }}" class="btn btn-primary">
+                Create Campaign →
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Report Information</h2>
+                <p>About your downloadable marketing report.</p>
+            </div>
+        </div>
+
+        <p>
+            This report summarizes the campaign data currently saved
+            in your MarketMind account. Download the PDF to keep a
+            copy of your marketing performance summary.
+        </p>
+
+        <p class="muted-text">
+            Report values are based on the campaign records available
+            when the report is generated.
+        </p>
+
+    </section>
+
+</section>
+
+{% endblock %}

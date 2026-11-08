@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}MarketMind | Digital Marketing Intelligence{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <header class="main-header">
+
+        <nav class="navbar">
+
+            <a href="{{ url_for('home') }}" class="brand">
+                <span class="brand-icon">M</span>
+
+                <span class="brand-text">
+                    Market<span>Mind</span>
+                    <small>MARKETING INTELLIGENCE</small>
+                </span>
+            </a>
+
+            <button class="menu-toggle"
+                    id="menuToggle"
+                    type="button"
+                    aria-label="Toggle navigation"
+                    aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-links" id="navLinks">
+
+                {% if session.get('user_id') %}
+
+                    <a href="{{ url_for('dashboard') }}"
+                       class="{% if request.endpoint == 'dashboard' %}active{% endif %}">
+                        Dashboard
+                    </a>
+
+                    <a href="{{ url_for('campaigns') }}"
+                       class="{% if request.endpoint == 'campaigns' %}active{% endif %}">
+                        Campaigns
+                    </a>
+
+                    <a href="{{ url_for('analytics') }}"
+                       class="{% if request.endpoint == 'analytics' %}active{% endif %}">
+                        Analytics
+                    </a>
+
+                    <a href="{{ url_for('ai_insights') }}"
+                       class="{% if request.endpoint == 'ai_insights' %}active{% endif %}">
+                        AI Insights
+                    </a>
+
+                    <a href="{{ url_for('audience') }}"
+                       class="{% if request.endpoint == 'audience' %}active{% endif %}">
+                        Audience
+                    </a>
+
+                    <a href="{{ url_for('sentiment') }}"
+                       class="{% if request.endpoint == 'sentiment' %}active{% endif %}">
+                        Sentiment
+                    </a>
+
+                    <a href="{{ url_for('recommendations') }}"
+                       class="{% if request.endpoint == 'recommendations' %}active{% endif %}">
+                        Recommendations
+                    </a>
+
+                    <a href="{{ url_for('competitors') }}"
+                       class="{% if request.endpoint == 'competitors' %}active{% endif %}">
+                        Competitors
+                    </a>
+
+                    <a href="{{ url_for('content_planner') }}"
+                       class="{% if request.endpoint == 'content_planner' %}active{% endif %}">
+                        Content Planner
+                    </a>
+
+                    <a href="{{ url_for('budget_optimizer') }}"
+                       class="{% if request.endpoint == 'budget_optimizer' %}active{% endif %}">
+                        Budget Optimizer
+                    </a>
+
+                    <a href="{{ url_for('assistant') }}"
+                       class="{% if request.endpoint == 'assistant' %}active{% endif %}">
+                        Assistant
+                    </a>
+
+                    <a href="{{ url_for('reports') }}"
+                       class="{% if request.endpoint == 'reports' %}active{% endif %}">
+                        Reports
+                    </a>
+
+                    <!-- PROFILE LINK -->
+                    <a href="{{ url_for('profile') }}"
+                       class="{% if request.endpoint == 'profile' %}active{% endif %}">
+                        My Profile
+                    </a>
+
+                    <!-- ADMIN LINK -->
+                    {% if session.get('user_role') == 'admin' %}
+                        <a href="{{ url_for('admin') }}"
+                           class="{% if request.endpoint == 'admin' %}active{% endif %}">
+                            Admin
+                        </a>
+                    {% endif %}
+
+                    <div class="nav-user">
+                        <span class="user-avatar">
+                            {{ session.get('user_name', 'U')[0]|upper }}
+                        </span>
+
+                        <span class="user-name">
+                            {{ session.get('user_name', 'User') }}
+                        </span>
+                    </div>
+
+                    <a href="{{ url_for('logout') }}"
+                       class="nav-logout">
+                        Logout
+                    </a>
+
+                {% else %}
+
+                    <a href="{{ url_for('home') }}">Home</a>
+
+                    <a href="{{ url_for('login') }}"
+                       class="{% if request.endpoint == 'login' %}active{% endif %}">
+                        Login
+                    </a>
+
+                    <a href="{{ url_for('signup') }}"
+                       class="nav-signup">
+                        Get Started
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- FLASH MESSAGES -->
+    <main class="main-content">
+
+        <div class="flash-container">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    {% for category, message in messages %}
+
+                        <div class="flash-message {{ category }}">
+                            <span>{{ message }}</span>
+
+                            <button type="button"
+                                    class="flash-close"
+                                    onclick="this.parentElement.remove()">
+                                &times;
+                            </button>
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+        </div>
+
+
+        <!-- PAGE CONTENT -->
+        {% block content %}
+        {% endblock %}
+
+        {% block login_content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+
+        <div class="footer-content">
+
+            <div>
+                <strong>MarketMind</strong>
+                <p>AI-Powered Digital Marketing Intelligence Platform</p>
+            </div>
+
+            <div class="footer-copy">
+                © {{ now_year if now_year is defined else 2026 }}
+                MarketMind. All rights reserved.
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <script>
+        const menuToggle = document.getElementById("menuToggle");
+        const navLinks = document.getElementById("navLinks");
+
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener("click", function () {
+                const isOpen = navLinks.classList.toggle("show");
+                menuToggle.setAttribute("aria-expanded", isOpen);
+            });
+        }
+
+        document.querySelectorAll(".flash-close").forEach(function (button) {
+            button.addEventListener("click", function () {
+                button.parentElement.remove();
+            });
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Sentiment Analysis | MarketMind{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="dashboard-heading">
+        <div>
+            <span class="eyebrow">AI CUSTOMER INTELLIGENCE</span>
+            <h1>Customer Sentiment Analysis</h1>
+            <p>Understand customer opinions through text-based sentiment analysis.</p>
+        </div>
+    </div>
+
+
+    <div class="panel sentiment-card">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Analyze Customer Feedback</h2>
+                <p>Enter feedback to identify customer sentiment.</p>
+            </div>
+
+            <span class="panel-symbol">✦</span>
+        </div>
+
+
+        <form method="POST" action="{{ url_for('sentiment') }}">
+
+            <div class="form-field">
+                <label for="feedback">Customer Feedback</label>
+
+                <textarea
+                    id="feedback"
+                    name="feedback"
+                    rows="6"
+                    maxlength="5000"
+                    placeholder="Example: I really love this product. Great quality and excellent service!"
+                    required>{{ feedback or '' }}</textarea>
+
+                <small>Maximum 5,000 characters.</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Analyze Sentiment →
+            </button>
+
+        </form>
+
+
+        {% if result %}
+
+        <div class="sentiment-result">
+
+            <span class="eyebrow">ANALYSIS RESULT</span>
+
+            <h2>{{ result.sentiment }}</h2>
+
+            <p>{{ result.message }}</p>
+
+            <div class="sentiment-score">
+                Polarity Score:
+                <strong>{{ "%.2f"|format(result.polarity|float) }}</strong>
+            </div>
+
+            <p class="sentiment-note">
+                Sentiment is estimated from the English text provided.
+                Results are indicative and may not capture every context,
+                sarcasm or expression.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <section class="content-section">
+
+        <div class="section-heading">
+            <div>
+                <h2>Understanding Sentiment</h2>
+                <p>Learn what each sentiment category represents.</p>
+            </div>
+        </div>
+
+
+        <div class="feature-grid sentiment-examples">
+
+            <article class="feature-card">
+                <span class="eyebrow">POSITIVE</span>
+                <h3>Positive Sentiment</h3>
+                <p>
+                    Customer feedback expressing satisfaction,
+                    appreciation or a favourable experience.
+                </p>
+            </article>
+
+
+            <article class="feature-card">
+                <span class="eyebrow">NEGATIVE</span>
+                <h3>Negative Sentiment</h3>
+                <p>
+                    Customer feedback expressing dissatisfaction,
+                    complaints or concerns.
+                </p>
+            </article>
+
+
+            <article class="feature-card">
+                <span class="eyebrow">NEUTRAL</span>
+                <h3>Neutral Sentiment</h3>
+                <p>
+                    Customer feedback without a strong positive
+                    or negative tone.
+                </p>
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <p class="insight-disclaimer">
+        This feature uses TextBlob-based English sentiment estimation.
+        It is a basic text-analysis tool, not a guarantee of customer opinion.
+    </p>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}Content Planner | MarketMind{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="dashboard-heading">
+        <div>
+            <span class="eyebrow">CONTENT STRATEGY</span>
+            <h1>Content Planner</h1>
+            <p>Plan, organize and manage your digital marketing content.</p>
+        </div>
+
+        <span class="status-badge">Content Management</span>
+    </div>
+
+
+    <section class="stats-grid">
+
+        <article class="stat-card">
+            <span class="stat-label">Total Posts</span>
+            <strong>{{ posts|length }}</strong>
+            <small>All content plans</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Planned</span>
+            <strong>{{ posts|selectattr("status", "equalto", "Planned")|list|length }}</strong>
+            <small>Upcoming content</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Published</span>
+            <strong>{{ posts|selectattr("status", "equalto", "Published")|list|length }}</strong>
+            <small>Published posts</small>
+        </article>
+
+        <article class="stat-card">
+            <span class="stat-label">Drafts</span>
+            <strong>{{ posts|selectattr("status", "equalto", "Draft")|list|length }}</strong>
+            <small>Content in preparation</small>
+        </article>
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Create Content Plan</h2>
+                <p>Schedule your upcoming social media posts.</p>
+            </div>
+        </div>
+
+
+        <form method="POST" action="{{ url_for('content_planner') }}">
+
+            <div class="form-grid">
+
+                <div class="form-field">
+                    <label for="title">Content Title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        maxlength="150"
+                        placeholder="Enter content title"
+                        required>
+                </div>
+
+
+                <div class="form-field">
+                    <label for="platform">Platform</label>
+
+                    <select id="platform" name="platform" required>
+                        <option value="">Select Platform</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="YouTube">YouTube</option>
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="Twitter">Twitter / X</option>
+                    </select>
+                </div>
+
+
+                <div class="form-field">
+                    <label for="post_date">Publishing Date</label>
+                    <input
+                        type="date"
+                        id="post_date"
+                        name="post_date"
+                        required>
+                </div>
+
+
+                <div class="form-field">
+                    <label for="status">Status</label>
+
+                    <select id="status" name="status" required>
+                        <option value="Planned">Planned</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Published">Published</option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <div style="margin-top: 22px;">
+                <button type="submit" class="btn btn-primary">
+                    + Add Content Plan
+                </button>
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-heading">
+            <div>
+                <h2>Content Schedule</h2>
+                <p>View and manage your planned marketing posts.</p>
+            </div>
+
+            <span class="status-badge">
+                {{ posts|length }} Posts
+            </span>
+        </div>
+
+
+        {% if posts %}
+
+        <div class="table-responsive">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>Content Title</th>
+                        <th>Platform</th>
+                        <th>Publishing Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    {% for post in posts %}
+
+                    <tr>
+
+                        <td>
+                            <strong>{{ post["title"] }}</strong>
+                        </td>
+
+                        <td>
+                            {{ post["platform"] or "N/A" }}
+                        </td>
+
+                        <td>
+                            {{ post["post_date"] or "Not scheduled" }}
+                        </td>
+
+                        <td>
+
+                            {% if post["status"] == "Published" %}
+                                <span class="status-badge status-published">
+                                    Published
+                                </span>
+                            {% elif post["status"] == "Draft" %}
+                                <span class="status-badge status-draft">
+                                    Draft
+                                </span>
+                            {% else %}
+                                <span class="status-badge status-planned">
+                                    Planned
+                                </span>
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <form
+                                method="POST"
+                                action="{{ url_for('delete_content', post_id=post['id']) }}"
+                                onsubmit="return confirm('Are you sure you want to delete this content plan?');">
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="empty-state">
+            <h3>No Content Plans Yet</h3>
+            <p>
+                Start organizing your marketing strategy by creating
+                your first content plan.
+            </p>
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <p class="insight-disclaimer">
+        Content Planner helps organize publishing schedules.
+        It does not automatically publish posts to social media platforms.
+    </p>
+
+</section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const dateInput = document.getElementById("post_date");
+
+    if (dateInput) {
+        const today = new Date();
+        const localDate = new Date(
+            today.getTime() - today.getTimezoneOffset() * 60000
+        ).toISOString().split("T")[0];
+
+        dateInput.min = localDate;
+    }
+});
+</script>
+
+{% endblock %}
