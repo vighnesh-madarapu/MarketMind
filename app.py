@@ -26,11 +26,11 @@ from reportlab.platypus import (
 )
 
 from config import Config
-from database import init_db, get_db_connection
+from database.database import init_db, get_db_connection
 
-from sentiment import analyze_sentiment
-from segmentation import segment_customers
-from recommendations import generate_recommendations
+from ai_models.sentiment import analyze_sentiment
+from ai_models.segmentation import segment_customers
+from ai_models.recommendations import generate_recommendations
 
 
 # --------------------------------------------------
