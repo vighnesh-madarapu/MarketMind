@@ -22,228 +22,280 @@
 
 <body>
 
-    <!-- NAVIGATION -->
-    <header class="main-header">
+{% if session.get('user_id') %}
 
+<div class="mm-app-layout">
+
+    <aside class="mm-sidebar" id="mmSidebar">
+
+        <a href="{{ url_for('dashboard') }}" class="mm-brand">
+            <span class="mm-brand-icon">M</span>
+            <span class="mm-brand-name">
+                Market<span>Mind</span>
+                <small>MARKETING INTELLIGENCE</small>
+            </span>
+        </a>
+
+        <div class="mm-sidebar-divider"></div>
+
+        <p class="mm-nav-label">MAIN MENU</p>
+
+        <nav class="mm-navigation">
+
+            <a href="{{ url_for('dashboard') }}"
+               class="mm-nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                <span class="mm-nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('campaigns') }}"
+               class="mm-nav-link {% if request.endpoint == 'campaigns' %}active{% endif %}">
+                <span class="mm-nav-icon">◈</span>
+                <span>Campaigns</span>
+            </a>
+
+            <a href="{{ url_for('analytics') }}"
+               class="mm-nav-link {% if request.endpoint == 'analytics' %}active{% endif %}">
+                <span class="mm-nav-icon">▥</span>
+                <span>Analytics</span>
+            </a>
+
+            <a href="{{ url_for('ai_insights') }}"
+               class="mm-nav-link {% if request.endpoint == 'ai_insights' %}active{% endif %}">
+                <span class="mm-nav-icon">✧</span>
+                <span>AI Insights</span>
+            </a>
+
+            <a href="{{ url_for('audience') }}"
+               class="mm-nav-link {% if request.endpoint == 'audience' %}active{% endif %}">
+                <span class="mm-nav-icon">♧</span>
+                <span>Audience</span>
+            </a>
+
+            <a href="{{ url_for('sentiment') }}"
+               class="mm-nav-link {% if request.endpoint == 'sentiment' %}active{% endif %}">
+                <span class="mm-nav-icon">◎</span>
+                <span>Sentiment</span>
+            </a>
+
+            <a href="{{ url_for('recommendations') }}"
+               class="mm-nav-link {% if request.endpoint == 'recommendations' %}active{% endif %}">
+                <span class="mm-nav-icon">✦</span>
+                <span>Recommendations</span>
+            </a>
+
+            <a href="{{ url_for('competitors') }}"
+               class="mm-nav-link {% if request.endpoint == 'competitors' %}active{% endif %}">
+                <span class="mm-nav-icon">♜</span>
+                <span>Competitors</span>
+            </a>
+
+            <a href="{{ url_for('content_planner') }}"
+               class="mm-nav-link {% if request.endpoint == 'content_planner' %}active{% endif %}">
+                <span class="mm-nav-icon">▤</span>
+                <span>Content Planner</span>
+            </a>
+
+            <a href="{{ url_for('budget_optimizer') }}"
+               class="mm-nav-link {% if request.endpoint == 'budget_optimizer' %}active{% endif %}">
+                <span class="mm-nav-icon">◉</span>
+                <span>Budget Optimizer</span>
+            </a>
+
+            <a href="{{ url_for('assistant') }}"
+               class="mm-nav-link {% if request.endpoint == 'assistant' %}active{% endif %}">
+                <span class="mm-nav-icon">✧</span>
+                <span>Assistant</span>
+            </a>
+
+            <a href="{{ url_for('reports') }}"
+               class="mm-nav-link {% if request.endpoint == 'reports' %}active{% endif %}">
+                <span class="mm-nav-icon">▧</span>
+                <span>Reports</span>
+            </a>
+
+            {% if session.get('user_role') == 'admin' %}
+            <a href="{{ url_for('admin') }}"
+               class="mm-nav-link {% if request.endpoint == 'admin' %}active{% endif %}">
+                <span class="mm-nav-icon">♙</span>
+                <span>Admin Panel</span>
+            </a>
+            {% endif %}
+
+        </nav>
+
+        <div class="mm-sidebar-bottom">
+
+            <div class="mm-sidebar-divider"></div>
+
+            <a href="{{ url_for('profile') }}"
+               class="mm-profile-link {% if request.endpoint == 'profile' %}active{% endif %}">
+
+                <span class="mm-avatar">
+                    {{ session.get('user_name', 'U')[0]|upper }}
+                </span>
+
+                <span class="mm-profile-details">
+                    <strong>{{ session.get('user_name', 'User') }}</strong>
+                    <small>My Profile</small>
+                </span>
+
+                <span class="mm-profile-arrow">›</span>
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="mm-logout">
+                <span>↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+    <div class="mm-main-area">
+
+        <header class="mm-topbar">
+
+            <button class="mm-menu-toggle"
+                    id="mmMenuToggle"
+                    type="button"
+                    aria-label="Toggle sidebar"
+                    aria-expanded="false">
+                ☰
+            </button>
+
+            <div class="mm-topbar-title">
+                <span>MARKETMIND WORKSPACE</span>
+                <strong>Marketing Intelligence Platform</strong>
+            </div>
+
+            <div class="mm-topbar-right">
+                <span class="mm-online-dot"></span>
+                <span>Workspace Active</span>
+            </div>
+
+        </header>
+
+{% else %}
+
+    <header class="main-header">
         <nav class="navbar">
 
             <a href="{{ url_for('home') }}" class="brand">
                 <span class="brand-icon">M</span>
-
                 <span class="brand-text">
                     Market<span>Mind</span>
                     <small>MARKETING INTELLIGENCE</small>
                 </span>
             </a>
 
-            <button class="menu-toggle"
-                    id="menuToggle"
-                    type="button"
-                    aria-label="Toggle navigation"
-                    aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}">Home</a>
 
-            <div class="nav-links" id="navLinks">
+                <a href="{{ url_for('login') }}"
+                   class="{% if request.endpoint == 'login' %}active{% endif %}">
+                    Login
+                </a>
 
-                {% if session.get('user_id') %}
-
-                    <a href="{{ url_for('dashboard') }}"
-                       class="{% if request.endpoint == 'dashboard' %}active{% endif %}">
-                        Dashboard
-                    </a>
-
-                    <a href="{{ url_for('campaigns') }}"
-                       class="{% if request.endpoint == 'campaigns' %}active{% endif %}">
-                        Campaigns
-                    </a>
-
-                    <a href="{{ url_for('analytics') }}"
-                       class="{% if request.endpoint == 'analytics' %}active{% endif %}">
-                        Analytics
-                    </a>
-
-                    <a href="{{ url_for('ai_insights') }}"
-                       class="{% if request.endpoint == 'ai_insights' %}active{% endif %}">
-                        AI Insights
-                    </a>
-
-                    <a href="{{ url_for('audience') }}"
-                       class="{% if request.endpoint == 'audience' %}active{% endif %}">
-                        Audience
-                    </a>
-
-                    <a href="{{ url_for('sentiment') }}"
-                       class="{% if request.endpoint == 'sentiment' %}active{% endif %}">
-                        Sentiment
-                    </a>
-
-                    <a href="{{ url_for('recommendations') }}"
-                       class="{% if request.endpoint == 'recommendations' %}active{% endif %}">
-                        Recommendations
-                    </a>
-
-                    <a href="{{ url_for('competitors') }}"
-                       class="{% if request.endpoint == 'competitors' %}active{% endif %}">
-                        Competitors
-                    </a>
-
-                    <a href="{{ url_for('content_planner') }}"
-                       class="{% if request.endpoint == 'content_planner' %}active{% endif %}">
-                        Content Planner
-                    </a>
-
-                    <a href="{{ url_for('budget_optimizer') }}"
-                       class="{% if request.endpoint == 'budget_optimizer' %}active{% endif %}">
-                        Budget Optimizer
-                    </a>
-
-                    <a href="{{ url_for('assistant') }}"
-                       class="{% if request.endpoint == 'assistant' %}active{% endif %}">
-                        Assistant
-                    </a>
-
-                    <a href="{{ url_for('reports') }}"
-                       class="{% if request.endpoint == 'reports' %}active{% endif %}">
-                        Reports
-                    </a>
-
-                    <!-- PROFILE LINK -->
-                    <a href="{{ url_for('profile') }}"
-                       class="{% if request.endpoint == 'profile' %}active{% endif %}">
-                        My Profile
-                    </a>
-
-                    <!-- ADMIN LINK -->
-                    {% if session.get('user_role') == 'admin' %}
-                        <a href="{{ url_for('admin') }}"
-                           class="{% if request.endpoint == 'admin' %}active{% endif %}">
-                            Admin
-                        </a>
-                    {% endif %}
-
-                    <div class="nav-user">
-                        <span class="user-avatar">
-                            {{ session.get('user_name', 'U')[0]|upper }}
-                        </span>
-
-                        <span class="user-name">
-                            {{ session.get('user_name', 'User') }}
-                        </span>
-                    </div>
-
-                    <a href="{{ url_for('logout') }}"
-                       class="nav-logout">
-                        Logout
-                    </a>
-
-                {% else %}
-
-                    <a href="{{ url_for('home') }}">Home</a>
-
-                    <a href="{{ url_for('login') }}"
-                       class="{% if request.endpoint == 'login' %}active{% endif %}">
-                        Login
-                    </a>
-
-                    <a href="{{ url_for('signup') }}"
-                       class="nav-signup">
-                        Get Started
-                    </a>
-
-                {% endif %}
-
+                <a href="{{ url_for('signup') }}" class="nav-signup">
+                    Get Started
+                </a>
             </div>
 
         </nav>
-
     </header>
 
-
-    <!-- FLASH MESSAGES -->
-    <main class="main-content">
-
-        <div class="flash-container">
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-
-                {% if messages %}
-
-                    {% for category, message in messages %}
-
-                        <div class="flash-message {{ category }}">
-                            <span>{{ message }}</span>
-
-                            <button type="button"
-                                    class="flash-close"
-                                    onclick="this.parentElement.remove()">
-                                &times;
-                            </button>
-                        </div>
-
-                    {% endfor %}
-
-                {% endif %}
-
-            {% endwith %}
-
-        </div>
+{% endif %}
 
 
-        <!-- PAGE CONTENT -->
-        {% block content %}
-        {% endblock %}
+<!-- COMMON PAGE CONTENT: BLOCKS DECLARED ONLY ONCE -->
 
-        {% block login_content %}
-        {% endblock %}
+<main class="{% if session.get('user_id') %}main-content mm-page-content{% else %}main-content{% endif %}">
 
-    </main>
+    <div class="flash-container">
 
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
 
-    <!-- FOOTER -->
-    <footer class="main-footer">
+                    <div class="flash-message {{ category }}">
+                        <span>{{ message }}</span>
 
-        <div class="footer-content">
+                        <button type="button"
+                                class="flash-close"
+                                onclick="this.parentElement.remove()">
+                            &times;
+                        </button>
+                    </div>
 
-            <div>
-                <strong>MarketMind</strong>
-                <p>AI-Powered Digital Marketing Intelligence Platform</p>
-            </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-            <div class="footer-copy">
-                © {{ now_year if now_year is defined else 2026 }}
-                MarketMind. All rights reserved.
-            </div>
+    </div>
 
-        </div>
+    {% block content %}{% endblock %}
 
+    {% block login_content %}{% endblock %}
+
+    {% if session.get('user_id') %}
+    <footer class="mm-footer">
+        <strong>MarketMind</strong>
+        <span>
+            © {{ now_year if now_year is defined else 2026 }}
+            MarketMind. All rights reserved.
+        </span>
     </footer>
+    {% endif %}
+
+</main>
 
 
-    <!-- JAVASCRIPT -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% if session.get('user_id') %}
 
-    <script>
-        const menuToggle = document.getElementById("menuToggle");
-        const navLinks = document.getElementById("navLinks");
+    </div>
+</div>
 
-        if (menuToggle && navLinks) {
-            menuToggle.addEventListener("click", function () {
-                const isOpen = navLinks.classList.toggle("show");
-                menuToggle.setAttribute("aria-expanded", isOpen);
-            });
-        }
+{% else %}
 
-        document.querySelectorAll(".flash-close").forEach(function (button) {
-            button.addEventListener("click", function () {
-                button.parentElement.remove();
-            });
+<footer class="main-footer">
+    <div class="footer-content">
+        <div>
+            <strong>MarketMind</strong>
+            <p>AI-Powered Digital Marketing Intelligence Platform</p>
+        </div>
+
+        <div class="footer-copy">
+            © {{ now_year if now_year is defined else 2026 }}
+            MarketMind. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+{% endif %}
+
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<script>
+    const mmToggle = document.getElementById("mmMenuToggle");
+    const mmSidebar = document.getElementById("mmSidebar");
+
+    if (mmToggle && mmSidebar) {
+        mmToggle.addEventListener("click", function () {
+            const isOpen = mmSidebar.classList.toggle("mm-sidebar-open");
+            mmToggle.setAttribute("aria-expanded", isOpen);
         });
-    </script>
+    }
 
-    {% block extra_js %}{% endblock %}
+    document.querySelectorAll(".flash-close").forEach(function (button) {
+    button.addEventListener("click", function () {
+        button.parentElement.remove();
+    });
+});
+</script>
+
+{% block extra_js %}{% endblock %}
 
 </body>
 </html>
